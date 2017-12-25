@@ -13,8 +13,9 @@
       <ul>
         <li class="search"><input type="search" name="search" placeholder="Search messages..." incremental="true" /></li>
         <li class="clear"><a href="#" title="Clear all messages">Clear</a></li>
+        <% warn_message = MailCatcher::Mail.in_memory_db? ? "You will lose all your received messages.\n\n" : "" %>
         <% if MailCatcher.quittable? %>
-          <li class="quit"><a href="#" title="Quit MailCatcher">Quit</a></li>
+          <li class="quit"><a href="#" title="Quit MailCatcher" data-confirm-message="<%= warn_message %>">Quit</a></li>
         <% end %>
       </ul>
     </nav>

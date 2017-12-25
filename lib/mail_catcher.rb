@@ -80,6 +80,7 @@ module MailCatcher extend self
     :daemon => !windows?,
     :browse => false,
     :quit => true,
+    :db_path => ":memory:",
   }
 
   def options
@@ -118,6 +119,11 @@ module MailCatcher extend self
 
         parser.on("--no-quit", "Don't allow quitting the process") do
           options[:quit] = false
+        end
+
+        parser.on("--db-path PATH", String, "Set path to database") do |path|
+          puts path
+          options[:db_path] = path
         end
 
         if mac?
@@ -166,6 +172,9 @@ module MailCatcher extend self
     end
 
     puts "Starting MailCatcher"
+
+    # Initialize database
+    Mail.db(options[:db_path])
 
     Thin::Logging.silent = (ENV["MAILCATCHER_ENV"] != "development")
 
